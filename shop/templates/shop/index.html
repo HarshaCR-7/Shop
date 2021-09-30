@@ -11,40 +11,60 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="{% static 'shop/style.css' %}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
-  <title>Shopping</title>
+  <title>E-Shopping</title>
 </head>
+<style>
+  #con{
+    width: 95%;
+    margin-bottom: 30px;
+  }
+</style>
 <body>
-  <div class="container">
 
-    <div class="row">
-      <div class="col-md-12">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/"><h3 style="color: aqua;"><i  class="fas fa-cart-arrow-down"></i>&nbsp;E-Shop</h3></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <button id="cart" data-html="true" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+              </button>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav ml-auto">
+            
+            <li class="nav-item">
+              {% if request.user.is_authenticated %}
+          <button  data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: aqua;" class="fas fa-user" aria-hidden="true"></i>&nbsp;&nbsp;{{request.user}}</button>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <button id="cart" data-html="true" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-                   Cart(0)
-                </button>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </div>
+        
+
+            </li>
+            <li class="nav-item">&nbsp;&nbsp;
+              <a id="btn" href="{% url 'logout' %}"><button id="btn" data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: rgb(255, 0, 0);" class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;&nbsp;Logout</button></a>
+              {% else %}
+        <a href="{% url 'signup' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Register</button></a>
+        <a href="{% url 'login' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Login</button></a>
+        {% endif %}
+            </li>
+          </ul>
+        </div>
+        
+
+      </nav>
+
+
+
+  <div id="con" class="container-fluid pt-3">
+
 
 
 
@@ -66,7 +86,7 @@
       {% for product in product_objects %}
       <div class="col-md-3">
         <div class="card">
-          <img src="{{ product.image }}" class="card-img-top" alt="">
+          <a  href="/{{ product.id }}" ><img src="{{ product.image }}" class="card-img-top" alt=""></a>
           <div class="card-body">
             <div id="nm{{ product.id }}" class="card-title">{{ product.title }}</div>
             <div id="pr{{ product.id }}"  class="card-text">{{ product.price }}</div>
@@ -79,29 +99,34 @@
     </div>
 
     <div class="row">
-      <div class="col-md-3 offset-md-4">
-        <ul class="pagination">
+      <div class="col-md-3 pt-3 offset-md-5">
+        <ul  class="pagination">
           {% if product_objects.has_previous %}
             <li class="page-item">
               <a class="page-link" href="?page={{ product_objects.previous_page_number }}">previous</a>
-            </li>
+            </li>&nbsp;&nbsp;
           {% endif %}
           
 
           <li class="page-item active">
-            <a class="page-link" href="?page={{ product_objects.number }}">Currrent</a>
-          </li>
+            <a class="page-link" href="?page={{ product_objects.number }}">{{ product_objects.number }}</a>
+          </li>&nbsp;&nbsp;
 
           {% if product_objects.has_next %}
           <li class="page-item">
-            <a class="page-link" href="?page={{ product_objects.next_page_number }}">Next</a>
+            <a class="page-link"  href="?page={{ product_objects.next_page_number }}">Next</a>
           </li>
           {% endif %}
         </ul>
       </div>
     </div>
 
+
   </div>
+
+
+
+ 
 </body>
   <script type="text/javascript">
 
@@ -111,6 +136,7 @@
   else{
     cart= JSON.parse(localStorage.getItem('cart'));
   }
+  document.getElementById("cart").innerHTML = "Cart("+ Object.keys(cart).length + ")";
 
   $(document).on('click','.atc',function(){
     var item_id = this.id.toString();
@@ -131,22 +157,30 @@
     }
     localStorage.setItem('cart',JSON.stringify(cart));
     document.getElementById("cart").innerHTML = "Cart("+ Object.keys(cart).length + ")";
+    location.reload(true);
     
   });
   DisplayCart(cart);
   function DisplayCart(cart){
     var cartString = "";
     var cartIndex=1;
-    cartString += "<h4>This is your cart</h4>";
-
     for(var x in cart){
-      cartString += cartIndex+ ")";
-      cartString += document.getElementById("nm"+x).innerHTML + "Qty: " + cart[x][0] +"</br>"
+      cartString += "</br>" + cartIndex+ ")";
+      cartString += "&nbsp;" + document.getElementById("nm"+x).innerHTML+ "&nbsp;&nbsp;" + "Qty:&nbsp;" + cart[x][0] +"</br>"
       cartIndex += 1;
     }
-    cartString += "<a href='/checkout'><button class='btn btn-warning' id='checkout'>Checkout</button></a>";
+    if(cartIndex <= 1){
+      cartString += "</br><h4 style='text-align: center;' >Please Add Something</h4>";
+    }
+    cartString +="</br>" + "<a href='/checkout'><button class='btn btn-warning' id='checkout'>Checkout</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button style='align-items: left;' class='btn btn-danger' id='clear'>Clear Cart</button>";
     document.getElementById("cart").setAttribute('data-content',cartString);
     $('[data-toggle="popover"]').popover();
   }
+
+  $(document).on('click','#clear',function() {
+    localStorage.clear();
+    location.reload(true);
+});
+
   </script>
 </html>

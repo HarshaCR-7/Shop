@@ -14,7 +14,7 @@ def index(request):
     product_objects = product_objects.filter(title__icontains=item_name)
     
   
-  paginator = Paginator(product_objects,4)
+  paginator = Paginator(product_objects,8)
   page = request.GET.get('page')
   product_objects = paginator.get_page(page)
   
@@ -35,8 +35,11 @@ def checkout(request):
     zipcode = request.POST.get('zipcode',"")
     city = request.POST.get('city',"")
     total = request.POST.get('total',"")
-    
+
     order = Order(items=items,name=name,email=email,address=address,city=city,state=state,zipcode=zipcode,total=total)
     order.save()
     
   return render(request,'shop/checkout.html')
+
+def orderconfirm(request):
+  return render(request,'shop/order.html')

@@ -14,6 +14,8 @@ class Products(models.Model):
   category = models.CharField(max_length=200)
   description = models.TextField()
   image = models.CharField(max_length=1000000)
+  image2 = models.CharField(max_length=1000000)
+  image3 = models.CharField(max_length=1000000)
   
 
 class Order(models.Model):

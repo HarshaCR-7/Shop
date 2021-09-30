@@ -1,10 +1,84 @@
-#detail_img {
-  height: 50%;
-  width: 50%;
-  align-items:center;
+
+body {
+  margin: 10px;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  background-color:rgb(183, 219, 219);
+  display: flex;
+  flex-direction: column;
 }
 
-#full_row {
-  border: 15px solid green;
+.auto-slider{
+  position: relative;
+  box-sizing: content-box;
+  display: inline-block;
+  padding: 10px 10px 20px;
+  background: #121;
+  max-width: 720px;
+  margin: 20px auto;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
 }
+
+
+div#slider { overflow: hidden; }
+div#slider figure img { width: 20%; float: left;height:500px }
+div#slider figure { 
+position: relative;
+width: 500%;
+margin: 0;
+left: 0;
+text-align: left;
+font-size: 0;
+animation: 45s sliding ease infinite; 
+}
+#prices{
+  text-align: right;
+}
+/* Slider indicator */
+.indicator{
+  width: 100%;
+  max-width: 720px;
+  height: 6px;
+  background: rgb(183, 219, 219);;
+  position: absolute;
+  bottom: 0;
+  
+  animation: indicating 9s ease infinite; 
+  
+}
+.card-title {
+  color: rgb(245, 200, 0);
+  
+  background-image: linear-gradient(rgb(99, 99, 99), rgb(58, 58, 58));
+    
+  text-align: center;
+}
+.card{
+margin-top: 5px;
+margin-bottom: 10px;
+}
+.card-text{
+color: rgb(10, 117, 19);
+font-weight: 800;
+}
+
+@keyframes sliding{
+  0%{left: 0%; }
+  20%{left: -100%;}
+  40%{left: -200%;}
+  60%{left: -300%;}
+  80%{left: -400%;}
+  100%{left: 0%;}
+}        
+
+@keyframes indicating{
+  from{
+      left: -100%;
+  }
+  to{
+      left: 0;
+  }
+}  
 
