@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import Order, Products
 from django.core.paginator import Paginator
 
@@ -20,6 +20,65 @@ def index(request):
   
   return render(request,'shop/index.html',{'product_objects':product_objects})
 
+def ByPriceAes(request):
+  product_objects = Products.objects.order_by('price')
+  
+  
+  item_name = request.GET.get('item_name')
+  if item_name!= '' and item_name is not None:
+    product_objects = product_objects.filter(title__icontains=item_name)
+    
+  
+  paginator = Paginator(product_objects,8)
+  page = request.GET.get('page')
+  product_objects = paginator.get_page(page)
+  
+  return render(request,'shop/bypriceAes.html',{'product_objects':product_objects})
+
+def ByPriceDes(request):
+  product_objects = Products.objects.order_by('-price')
+  
+  
+  item_name = request.GET.get('item_name')
+  if item_name!= '' and item_name is not None:
+    product_objects = product_objects.filter(title__icontains=item_name)
+    
+  
+  paginator = Paginator(product_objects,8)
+  page = request.GET.get('page')
+  product_objects = paginator.get_page(page)
+  
+  return render(request,'shop/bypriceDes.html',{'product_objects':product_objects})
+
+def AZ(request):
+  product_objects = Products.objects.order_by('title')
+  
+  
+  item_name = request.GET.get('item_name')
+  if item_name!= '' and item_name is not None:
+    product_objects = product_objects.filter(title__icontains=item_name)
+    
+  
+  paginator = Paginator(product_objects,8)
+  page = request.GET.get('page')
+  product_objects = paginator.get_page(page)
+  
+  return render(request,'shop/A-Z.html',{'product_objects':product_objects})
+
+def ZA(request):
+  product_objects = Products.objects.order_by('-title')
+  
+  
+  item_name = request.GET.get('item_name')
+  if item_name!= '' and item_name is not None:
+    product_objects = product_objects.filter(title__icontains=item_name)
+    
+  
+  paginator = Paginator(product_objects,8)
+  page = request.GET.get('page')
+  product_objects = paginator.get_page(page)
+  
+  return render(request,'shop/Z-A.html',{'product_objects':product_objects})
 
 def detail(request,id):
   product_object = Products.objects.get(id=id)
@@ -37,9 +96,10 @@ def checkout(request):
     total = request.POST.get('total',"")
 
     order = Order(items=items,name=name,email=email,address=address,city=city,state=state,zipcode=zipcode,total=total)
-    order.save()
-    
+    order.save()   
+     
   return render(request,'shop/checkout.html')
+
 
 def orderconfirm(request):
   return render(request,'shop/order.html')

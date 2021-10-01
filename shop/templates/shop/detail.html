@@ -6,12 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="{% static 'shop/detial.css' %}">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>Document</title>
 </head>
 <body>
@@ -35,11 +36,9 @@
           {% if request.user.is_authenticated %}
           <button  data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: aqua;" class="fas fa-user" aria-hidden="true"></i>&nbsp;&nbsp;{{request.user}}</button>
           </button>
-        
-
-            </li>
-            <li class="nav-item">&nbsp;&nbsp;
-              <a id="btn" href="{% url 'logout' %}"><button id="btn" data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: rgb(255, 0, 0);" class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;&nbsp;Logout</button></a>
+        </li>
+        <li class="nav-item">&nbsp;&nbsp;
+              <button id="logoutbtn" data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: rgb(255, 0, 0);" class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;&nbsp;Logout</button>
               {% else %}
         <a href="{% url 'signup' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Register</button></a>
         <a href="{% url 'login' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Login</button></a>
@@ -85,4 +84,22 @@
   </div>
  
 </body>
+<script type="text/javascript">
+  $(document).on('click','#logoutbtn',function() {
+    Swal.fire({
+      position: 'center',
+      icon: 'info',
+      title: '<h1 style="color: rgb(255, 0, 43);">Thank you for shopping with Us!!!</h1>',
+      html:
+      'Click here to Logout' + `<br><br>` + `<a id='btn' href='{% url 'logout' %}'><button id='btn' data-html='true' type='button' class='btn btn-secondary btn-lg' data-container='body'><i style='color: rgb(255, 0, 0);' class='fas fa-sign-out-alt' aria-hidden='true'></i>&nbsp;&nbsp;Logout</button></a>`,
+      showCloseButton: true,
+      showConfirmButton: false,
+      allowOutsideClick: true
+    }).then(function() {
+      localStorage.clear();
+  });
+  });
+  
+</script>
+
 </html>

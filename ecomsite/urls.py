@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from shop.views import index
+from shop.views import index, ByPriceAes, ByPriceDes, AZ, ZA
 from userprofile.views import signup
 from shop.views import detail ,checkout,orderconfirm
 from django.contrib.auth import views
@@ -23,6 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',index,name='index'),
     path('<int:id>/',detail,name='detial'),
+    path('bypriceaes/',ByPriceAes,name='ByPriceAes'),
+    path('bypricedes/',ByPriceDes,name='ByPriceDes'),
+    path('a-z/',AZ,name='AZ'),
+    path('z-a/',ZA,name='ZA'),
     path('checkout/',checkout,name='checkout'),
     path('orderconfirm/',orderconfirm,name='orderconfirm'),
     path('signup/',signup,name='signup'),

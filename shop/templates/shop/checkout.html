@@ -40,7 +40,7 @@
 
             </li>
             <li class="nav-item">&nbsp;&nbsp;
-              <a href="{% url 'logout' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: rgb(255, 0, 0);" class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;&nbsp;Logout</button></a>
+              <button id="logoutbtn" data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: rgb(255, 0, 0);" class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;&nbsp;Logout</button>
               {% else %}
         <a href="{% url 'signup' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Register</button></a>
         <a href="{% url 'login' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Login</button></a>
@@ -73,35 +73,40 @@
       </div>
       <div class="form-group col-md-6">
         <label for="inputEmail4">Email</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+        <input type="email" class="form-control" id="email" name="email" placeholder="test1@gmail.com">
       </div>
       
     </div>
     <div class="form-group">
       <label for="inputAddress">Address</label>
-      <input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St">
+      <input type="text" class="form-control" id="address" name="address" placeholder="3rd street">
     </div>
     
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="inputCity">City</label>
-        <input type="text" class="form-control" id="city" name="city">
+        <input type="text" placeholder="ney" class="form-control" id="city" name="city">
       </div>
       <div class="form-group col-md-4">
         <label for="inputState">State</label>
-        <input type="text" class="form-control" id="state" name="state">
+        <input type="text" placeholder="dddd" class="form-control" id="state" name="state">
       </div>
       <div class="form-group col-md-2">
         <label for="inputZip">Zip</label>
-        <input type="text" class="form-control" name="zipcode" id="zipcode">
+        <input type="text" placeholder="23415" class="form-control" name="zipcode" id="zipcode">
       </div>
       <div class="form-group col-md-2">
         <label for="inputZip">Grand Total to Paid</label>
         <input readonly="" type="text" class="form-control" name="total" id="total">
       </div>
     </div>
-    <a href='/orderconfirm'><button type="submit"  id="bttn" class="btn btn-primary">Place Order</button></a>
-          </form>
+    <a href='/orderconfirm'><button type="submit"  id="bttn" class="btn btn-primary">Save Details</button></a>
+          </form><br>
+          <a href="/orderconfirm">
+            <button id="confirmbtn" class="btn btn-danger">Click here to Place Order
+            </button>
+          </a>
+
         </div>
       </div>
     </div>
@@ -172,7 +177,7 @@ $(document).on('click','#bttn',function(){
   }else{
     console.log("hello")
     window.location.href = '/orderconfirm';
-    return false;
+    return true;
   }
 
   if (x == "" ) {
@@ -245,6 +250,19 @@ $(document).on('click','#bttn',function(){
   
 }); 
 
-
+$(document).on('click','#logoutbtn',function() {
+  Swal.fire({
+    position: 'center',
+    icon: 'info',
+    title: '<h1 style="color: rgb(255, 0, 43);">Thank you for shopping with Us!!!</h1>',
+    html:
+    'Click here to Logout' + `<br><br>` + `<a id='btn' href='{% url 'logout' %}'><button id='btn' data-html='true' type='button' class='btn btn-secondary btn-lg' data-container='body'><i style='color: rgb(255, 0, 0);' class='fas fa-sign-out-alt' aria-hidden='true'></i>&nbsp;&nbsp;Logout</button></a>`,
+    showCloseButton: true,
+    showConfirmButton: false,
+    allowOutsideClick: true
+  }).then(function() {
+    localStorage.clear();
+});
+});
 </script>
 </html>
