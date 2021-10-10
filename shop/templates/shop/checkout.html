@@ -20,6 +20,17 @@
   #con{
     width: 95%;
   }
+  input {
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: #c9c6c6;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 18px;
+  }
 </style>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -30,8 +41,11 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="nav navbar-nav ml-auto">
           <li class="nav-item">&nbsp;&nbsp;
+            <button class="btn btn-secondary" id="idclear">Clear Cart</button>
+          </li>
+          <li class="nav-item">&nbsp;
             <a href="/"><button data-html="true" type="button" class="btn btn-secondary" data-container="body"> Go Back </button></a>
-          </li>&nbsp;
+          </li>&nbsp;&nbsp;
           <li class="nav-item">
             {% if request.user.is_authenticated %}
           <button  data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: aqua;" class="fas fa-user" aria-hidden="true"></i>&nbsp;&nbsp;{{request.user}}</button>
@@ -56,56 +70,56 @@
 
     <div id="con" class="container-fluid pt-3">
       <div class="row">
-        <div class="col-md-12">
+        
+        <div  class="col-sm-6" style="margin: 0 auto;">
+          <br>
+            <ul id="item_list3" class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">Product Name<span>Amount</span></li>
+            </ul>
+            
+            <ul id="item_list" class="list-group">
+       
+            </ul>
+
+        </div>
+       
+        
+        <div class="col-sm-12">
+          <div><br><br></div>
           <ul id="item_list1" class="list-group">
      
           </ul>
-          <ul id="item_list" class="list-group">
-     
+          
+          <ul  id="item_list2" class="list-group">
+            <form  action="" method="POST">
+              {% csrf_token %}
+              <input type="hidden" id="items" name="items">
+                <div class="form-row" name="forms" >
+                  {% for field in form  %}
+                    <div class="col-sm-6">
+                      {{ field.label_tag }}  {{ field }} 
+                    </div>
+                  {% endfor %}
+                    
+                  
+                </div>
+                <label for="inputZip">Grand Total to Paid</label>
+                 <input style="font-family: sans-serif;
+                 outline: 0;
+                 background: #c9c6c6;
+                 width: 100%;
+                 border: 0;
+                 margin: 0 0 15px;
+                 padding: 15px;
+                 box-sizing: border-box;
+                 font-size: 30px;" readonly="" type="text" class="form-control" name="total" id="total">
+                <a style="float:right;" href="/orderconfirm">
+                <button id="confirmbtn" class="btn btn-danger btn-lg">Place Order
+                </button>
+              </a>
+                
+            </form>
           </ul>
-          <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" id="items" name="items">
-    <div class="form-row" name="forms" >
-      <div class="form-group col-md-6">
-        <label for="inputPassword4">Name</label>
-        <input onsubmit="return validateForm()" name="name" type="text" class="form-control" id="name" placeholder="john">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="inputEmail4">Email</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="test1@gmail.com">
-      </div>
-      
-    </div>
-    <div class="form-group">
-      <label for="inputAddress">Address</label>
-      <input type="text" class="form-control" id="address" name="address" placeholder="3rd street">
-    </div>
-    
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="inputCity">City</label>
-        <input type="text" placeholder="ney" class="form-control" id="city" name="city">
-      </div>
-      <div class="form-group col-md-4">
-        <label for="inputState">State</label>
-        <input type="text" placeholder="dddd" class="form-control" id="state" name="state">
-      </div>
-      <div class="form-group col-md-2">
-        <label for="inputZip">Zip</label>
-        <input type="text" placeholder="23415" class="form-control" name="zipcode" id="zipcode">
-      </div>
-      <div class="form-group col-md-2">
-        <label for="inputZip">Grand Total to Paid</label>
-        <input readonly="" type="text" class="form-control" name="total" id="total">
-      </div>
-    </div>
-    <a href='/orderconfirm'><button type="submit"  id="bttn" class="btn btn-primary">Save Details</button></a>
-          </form><br>
-          <a href="/orderconfirm">
-            <button id="confirmbtn" class="btn btn-danger">Click here to Place Order
-            </button>
-          </a>
 
         </div>
       </div>
@@ -114,12 +128,14 @@
 
 
     {% endif %}
-  
 </body>
 <script type="text/javascript">
   
   
-  
+  $(document).on('click','#idclear',function() {
+    localStorage.clear();
+    location.reload(true);
+});
 
 
 
@@ -132,6 +148,7 @@
     cart = JSON.parse(localStorage.getItem('cart'));
   }
   var total = 0;
+  
   for(item in cart){
     let name = cart[item][1];
     let quantity = cart[item][0];
@@ -139,116 +156,36 @@
     let perprice = cart[item][3];
     total = total + cart[item][2];
 
-    itemString = `<li class="list-group-item d-flex justify-content-between align-items-center">${name}<span class="badge badge-warning badge-pill"> $ ${perprice}/-</span><span class="badge badge-primary badge-pill">Qty: ${quantity}</span>Total Amount of this item :<span class="badge badge-warning badge-pill"> $ ${price}</span></li>`
+    itemString = `<li class="list-group-item d-flex justify-content-between align-items-center">${name}<span class="badge badge-warning badge-pill"> $ ${perprice}/-</span><span class="badge badge-primary badge-pill">Qty: ${quantity}</span><span class="badge badge-warning badge-pill"> $ ${price}</span></li>`
     $('#item_list').append(itemString);
   }
   if(total == 0){
     Nototal = `   <h1 style="text-align: center; color: rgb(255, 66, 8);">Please <a style="color: aqua;" href="/">Go Back</a> & add products your Cart</h1> `
+    $(document).on('click','#confirmbtn',function() {
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: '<h1 style="color: rgb(255, 0, 43);">Reminder!!!</h1>',
+        html:'<h3 style="color: #000000;">Please Add Items to Place Order</h3>',
+        showConfirmButton: false,
+        timer: 1000
+      })
+        return false;
+    });
+    
+
   }else{
     Nototal = ``
+
   }
-  totalString = `<li class="list-group-item d-flex justify-content-between align-items-center"><span class="badge badge-warning badge-pill">Grand Total : $ ${total}</span></li>`
+  totalString = `<li class="list-group-item d-flex justify-content-between align-items-center"><span class="badge badge-warning badge-pill"><h5>Grand Total : $ ${total}</h5></span></li>`
   totalform = `$ ${total}`
+  total1 = `${total}`
   $('#item_list').append(totalString);
-  $('#total').val(total);
+  $('#total').val(total1);
   $('#item_list1').append(Nototal);
+
   $('#items').val(JSON.stringify(cart));
-
-
-$(document).on('click','#bttn',function(){
-  var x,y,z,a,b,c;
-  x = document.getElementById("name").value;
-  y = document.getElementById("email").value;
-  z = document.getElementById("address").value;
-  a = document.getElementById("state").value;
-  c = document.getElementById("city").value;
-  b = document.getElementById("zipcode").value;
-
-  if (x == "" && y == "" && z == "" && a == "" && b == "" && c == "" ) {
-    Swal.fire({
-      position: 'top',
-      icon: 'warning',
-      title: 'Reminder',
-      text:'Please enter all fields properly',
-      showConfirmButton: true,
-      timer: 2300
-    })
-      return false;
-  }else{
-    console.log("hello")
-    window.location.href = '/orderconfirm';
-    return true;
-  }
-
-  if (x == "" ) {
-    Swal.fire({
-      position: 'top',
-      icon: 'warning',
-      title: 'Reminder',
-      text:'Please enter your name',
-      showConfirmButton: true,
-      timer: 2300
-    })
-      return false;
-  }
-  else if (y == "" ) {
-    Swal.fire({
-      position: 'top',
-      icon: 'warning',
-      title: 'Reminder',
-      text:'Please enter your email',
-      showConfirmButton: true,
-      timer: 2300
-    })
-    return false;
-  }
-  else if (z == "" ) {
-    Swal.fire({
-      position: 'top',
-      icon: 'warning',
-      title: 'Reminder',
-      text:'Please enter your address',
-      showConfirmButton: true,
-      timer: 2300
-    })
-   return false;
-  }
-  else if (a == "" ) {
-    Swal.fire({
-      position: 'top',
-      icon: 'warning',
-      title: 'Reminder',
-      text:'Please enter your state',
-      showConfirmButton: true,
-      timer: 2300
-    })
-    return false;
-  }
-  else if (b == "" ) {
-    Swal.fire({
-      position: 'top',
-      icon: 'warning',
-      title: 'Reminder',
-      text:'Please enter your zip code',
-      showConfirmButton: true,
-      timer: 2300
-    })
-    return false;
-  }
-  else if  (c == "" ) {
-    Swal.fire({
-      position: 'top',
-      icon: 'warning',
-      title: 'Reminder',
-      text:'Please enter your city',
-      showConfirmButton: true,
-      timer: 2300
-    })
-   return false;
-  };
-  
-  
-}); 
 
 $(document).on('click','#logoutbtn',function() {
   Swal.fire({

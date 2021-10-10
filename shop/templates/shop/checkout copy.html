@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+
+
+  <title>Document</title>
+  
+</head>
+<style>
+  #con{
+    width: 95%;
+  }
+</style>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/"><h3 style="color: aqua;"><i class="fas fa-cart-arrow-down"></i>&nbsp;E-Shop</h3></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="nav navbar-nav ml-auto">
+          <li class="nav-item">&nbsp;&nbsp;
+            <button class="btn btn-secondary" id="idclear">Clear Cart</button>
+          </li>
+          <li class="nav-item">&nbsp;
+            <a href="/"><button data-html="true" type="button" class="btn btn-secondary" data-container="body"> Go Back </button></a>
+          </li>&nbsp;&nbsp;
+          <li class="nav-item">
+            {% if request.user.is_authenticated %}
+          <button  data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: aqua;" class="fas fa-user" aria-hidden="true"></i>&nbsp;&nbsp;{{request.user}}</button>
+          </button>
+        
+
+            </li>
+            <li class="nav-item">&nbsp;&nbsp;
+              <button id="logoutbtn" data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: rgb(255, 0, 0);" class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;&nbsp;Logout</button>
+              {% else %}
+        <a href="{% url 'signup' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Register</button></a>
+        <a href="{% url 'login' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Login</button></a>
+        {% endif %}
+          </li>
+        </ul>
+      </div>
+    </nav>
+    {% if not request.user.is_authenticated %}
+      <h1 style="text-align: center; color: rgb(3, 1, 0);">Continue as guest <br> or <br> <a style="color: rgb(0, 255, 42);" href="{% url 'login' %}">log in</a> / <a style="color: rgb(255, 72, 0);" href="{% url 'signup' %}">Register Here</a></h1>
+    {% else %}
+
+
+    <div id="con" class="container-fluid pt-3">
+      <div class="row">
+        <div class="col-md-12">
+          <ul id="item_list1" class="list-group">
+     
+          </ul>
+          <ul id="item_list" class="list-group">
+     
+          </ul>
+          
+            <form method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" id="items" name="items">
+                          <div class="form-row" name="forms" >
+                            <div class="form-group col-md-6">
+                              <label for="inputPassword4">Name</label>
+                              <input onsubmit="return validateForm()" name="name" type="text" class="form-control" id="name" placeholder="john">
+                            </div>
+                            <div class="form-group col-md-6">
+                              <label for="inputEmail4">Email</label>
+                              <input type="email" class="form-control" id="email" name="email" placeholder="test1@gmail.com">
+                            </div>
+                            
+                          </div>
+                          <div class="form-group">
+                            <label for="inputAddress">Address</label>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="3rd street">
+                          </div>
+                          
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+                              <label for="inputCity">City</label>
+                              <input type="text" placeholder="ney" class="form-control" id="city" name="city">
+                            </div>
+                            <div class="form-group col-md-4">
+                              <label for="inputState">State</label>
+                              <input type="text" placeholder="dddd" class="form-control" id="state" name="state">
+                            </div>
+                            <div class="form-group col-md-2">
+                              <label for="inputZip">Zip</label>
+                              <input type="text" placeholder="23415" class="form-control" name="zipcode" id="zipcode">
+                            </div>
+                            <div class="form-group col-md-2">
+                              <label for="inputZip">Grand Total to Paid</label>
+                              <input readonly="" type="text" class="form-control" name="total" id="total">
+                            </div>
+                          </div>
+                          <a href='/orderconfirm'><button type="submit"  id="bttn" class="btn btn-primary">Save Details</button></a>
+          </form>
+
+                    
+          
+          
+          <br>
+          <a href="/orderconfirm">
+            <button id="confirmbtn" class="btn btn-danger">Click here to Place Order
+            </button>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    {% endif %}
+  
+</body>
+<script type="text/javascript">
+  
+  
+  $(document).on('click','#idclear',function() {
+    localStorage.clear();
+    location.reload(true);
+});
+
+
+
+
+
+  if(localStorage.getItem('cart')==null){
+    var cart = {}
+  }
+  else{
+    cart = JSON.parse(localStorage.getItem('cart'));
+  }
+  var total = 0;
+  for(item in cart){
+    let name = cart[item][1];
+    let quantity = cart[item][0];
+    let price = cart[item][2];
+    let perprice = cart[item][3];
+    total = total + cart[item][2];
+
+    itemString = `<li class="list-group-item d-flex justify-content-between align-items-center">${name}<span class="badge badge-warning badge-pill"> $ ${perprice}/-</span><span class="badge badge-primary badge-pill">Qty: ${quantity}</span>Total Amount of this item :<span class="badge badge-warning badge-pill"> $ ${price}</span></li>`
+    $('#item_list').append(itemString);
+  }
+  if(total == 0){
+    Nototal = `   <h1 style="text-align: center; color: rgb(255, 66, 8);">Please <a style="color: aqua;" href="/">Go Back</a> & add products your Cart</h1> `
+  }else{
+    Nototal = ``
+  }
+  totalString = `<li class="list-group-item d-flex justify-content-between align-items-center"><span class="badge badge-warning badge-pill">Grand Total : $ ${total}</span></li>`
+  totalform = `$ ${total}`
+  $('#item_list').append(totalString);
+  $('#total').val(total);
+  $('#item_list1').append(Nototal);
+  $('#items').val(JSON.stringify(cart));
+
+
+$(document).on('click','#bttn',function(){
+  var x,y,z,a,b,c;
+  x = document.getElementById("name").value;
+  y = document.getElementById("email").value;
+  z = document.getElementById("address").value;
+  a = document.getElementById("state").value;
+  c = document.getElementById("city").value;
+  b = document.getElementById("zipcode").value;
+
+  if (x == "" && y == "" && z == "" && a == "" && b == "" && c == "" ) {
+    Swal.fire({
+      position: 'top',
+      icon: 'warning',
+      title: 'Reminder',
+      text:'Please enter all fields properly',
+      showConfirmButton: true,
+      timer: 2300
+    })
+      return false;
+  }else{
+    console.log("hello")
+    window.location.href = '/orderconfirm';
+    return true;
+  }
+
+  if (x == "" ) {
+    Swal.fire({
+      position: 'top',
+      icon: 'warning',
+      title: 'Reminder',
+      text:'Please enter your name',
+      showConfirmButton: true,
+      timer: 2300
+    })
+      return false;
+  }
+  else if (y == "" ) {
+    Swal.fire({
+      position: 'top',
+      icon: 'warning',
+      title: 'Reminder',
+      text:'Please enter your email',
+      showConfirmButton: true,
+      timer: 2300
+    })
+    return false;
+  }
+  else if (z == "" ) {
+    Swal.fire({
+      position: 'top',
+      icon: 'warning',
+      title: 'Reminder',
+      text:'Please enter your address',
+      showConfirmButton: true,
+      timer: 2300
+    })
+   return false;
+  }
+  else if (a == "" ) {
+    Swal.fire({
+      position: 'top',
+      icon: 'warning',
+      title: 'Reminder',
+      text:'Please enter your state',
+      showConfirmButton: true,
+      timer: 2300
+    })
+    return false;
+  }
+  else if (b == "" ) {
+    Swal.fire({
+      position: 'top',
+      icon: 'warning',
+      title: 'Reminder',
+      text:'Please enter your zip code',
+      showConfirmButton: true,
+      timer: 2300
+    })
+    return false;
+  }
+  else if  (c == "" ) {
+    Swal.fire({
+      position: 'top',
+      icon: 'warning',
+      title: 'Reminder',
+      text:'Please enter your city',
+      showConfirmButton: true,
+      timer: 2300
+    })
+   return false;
+  };
+  
+  
+}); 
+
+$(document).on('click','#logoutbtn',function() {
+  Swal.fire({
+    position: 'center',
+    icon: 'info',
+    title: '<h1 style="color: rgb(255, 0, 43);">Thank you for shopping with Us!!!</h1>',
+    html:
+    'Click here to Logout' + `<br><br>` + `<a id='btn' href='{% url 'logout' %}'><button id='btn' data-html='true' type='button' class='btn btn-secondary btn-lg' data-container='body'><i style='color: rgb(255, 0, 0);' class='fas fa-sign-out-alt' aria-hidden='true'></i>&nbsp;&nbsp;Logout</button></a>`,
+    showCloseButton: true,
+    showConfirmButton: false,
+    allowOutsideClick: true
+  }).then(function() {
+    localStorage.clear();
+});
+});
+</script>
+</html>

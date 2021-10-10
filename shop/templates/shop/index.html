@@ -24,45 +24,47 @@
 </style>
 <body>
 
-
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/"><h3 style="color: aqua;"><i  class="fas fa-cart-arrow-down"></i>&nbsp;E-Shop</h3></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <button id="cart" data-html="true" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-              </button>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav ml-auto">
-            
-            <li class="nav-item">
-              {% if request.user.is_authenticated %}
-          <button  data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: aqua;" class="fas fa-user" aria-hidden="true"></i>&nbsp;&nbsp;{{request.user}}</button>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><h3 style="color: aqua;"><i  class="fas fa-cart-arrow-down"></i>E-Shop</h3></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li style="margin: 3px 10px 0px 0px;"  class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li style="margin: 3px 10px 0px 0px;" class="nav-item">
+          <button data-html="true" type="button" class="btn btn-secondary" ><a style="color: white;" href="/checkout">Checkout</a>
           </button>
+        </li>
+        <li style="margin: 3px 10px 0px 0px;"  class="nav-item">
+          <button id="cart" data-html="true" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+          </button>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav ml-auto">
         
+        <li style="margin: 3px 10px 0px 0px;"  class="nav-item">
+          {% if request.user.is_authenticated %}
+      <button  data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: aqua;" class="fas fa-user" aria-hidden="true"></i>&nbsp;{{request.user}}</button>
+      </button>
+    
 
-            </li>
-            <li class="nav-item">&nbsp;&nbsp;
-              <button id="logoutbtn" data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: rgb(255, 0, 0);" class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;&nbsp;Logout</button>
+        </li>
+        <li style="margin: 3px 10px 0px 0px;"  class="nav-item">
+          <button id="logoutbtn" data-html="true" type="button" class="btn btn-secondary" data-container="body"><i style="color: rgb(255, 0, 0);" class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;Logout</button>
 
-              {% else %}
-        <a href="{% url 'signup' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Register</button></a>
-        <a href="{% url 'login' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Login</button></a>
-        {% endif %}
-            </li>
-          </ul>
-        </div>
-        
+          {% else %}
+    <a href="{% url 'signup' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Register</button></a>
+    <a href="{% url 'login' %}"><button data-html="true" type="button" class="btn btn-secondary" data-container="body">Login</button></a>
+    {% endif %}
+        </li>
+      </ul>
+    </div>
+    
 
-      </nav>
-
+  </nav>
 
 
   <div id="con" class="container-fluid pt-3">
